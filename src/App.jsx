@@ -27,9 +27,10 @@ const App = () => {
       
       const lowerInput = input.toLowerCase();
       if (lowerInput.includes('salom')) aiText = "Assalomu alaykum! Ishlaringiz yaxshimi?";
-      else if (lowerInput.includes('isming')) aiText = "Mening ismim - Gokki AI.";
-      else if (lowerInput.includes('qale')) aiText = "Men ajoyibman, o'zingiz-chi?";
-      else aiText = `Siz "${input}" dedingiz. Bu qiziq mavzu ekan!`;
+      else if (lowerInput.includes('isming')) aiText = "Nma gap ! Mening ismim Gokki AI, sizniki nima?";
+      else if (lowerInput.includes('zor')) aiText = "O'o'o'o nma boldi bugun km xursand qildi ";
+      else if (lowerInput.includes('qale') , lowerInput.includes('qalesan') , lowerInput.includes('qalesiz') , lowerInput.includes('nma gapgit ')) aiText = "Vapshe mazza, oziz qalesiz?";
+      else aiText = `"${input}" yo torisi bu mavzuda bilmasakanman organb kelaman mani yaratgan odam ja unchali zooor Dasturchi mas lkn mani yarati siz manga salom , isming , qale kabi savollar bersangiz javob beraman`;
 
       setMessages(prev => [...prev, { role: 'ai', text: aiText }]);
       setLoading(false);
