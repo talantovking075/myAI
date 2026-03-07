@@ -3,6 +3,7 @@ import './App.css';
 
 const App = () => {
   const [input, setInput] = useState('');
+  const [userName, setUserName] = useState(null);
   const [messages, setMessages] = useState([
     { role: 'ai', text: 'Salom! Men Gokki AI man. Siz bilan suhbatlashishga tayyorman.' }
   ]);
@@ -23,14 +24,30 @@ const App = () => {
     setLoading(true);
 
     setTimeout(() => {
-      let aiText = "Tushunmadim, qaytadan ayta olasizmi?";
-      
       const lowerInput = input.toLowerCase();
-      if (lowerInput.includes('salom')) aiText = "Assalomu alaykum! Ishlaringiz yaxshimi?";
-      else if (lowerInput.includes('isming')) aiText = "Nma gap ! Mening ismim Gokki AI, sizniki nima?";
-      else if (lowerInput.includes('zor')) aiText = "O'o'o'o nma boldi bugun km xursand qildi ";
-      else if (lowerInput.includes('qale') , lowerInput.includes('qalesan') , lowerInput.includes('qalesiz') , lowerInput.includes('nma gapgit ')) aiText = "Vapshe mazza, oziz qalesiz?";
-      else aiText = `"${input}" yo torisi bu mavzuda bilmasakanman organb kelaman mani yaratgan odam ja unchali zooor Dasturchi mas lkn mani yarati siz manga salom , isming , qale kabi savollar bersangiz javob beraman`;
+      let aiText = "";
+
+      if (lowerInput.includes('mening ismim') || lowerInput.includes('ismim ')) {
+        const nameParts = input.split(' ');
+        const name = nameParts[nameParts.length - 1];
+        setUserName(name);
+        aiText = `${name} zorakanu! Nma ish qlas ${name}?`;
+      } 
+      else if (lowerInput.includes('salom')) {
+        aiText = "Assalomu alaykum! Ishlaringiz yaxshimi?";
+      } 
+      else if (lowerInput.includes('isming') || lowerInput.includes('ismingiz') || lowerInput.includes('ismin')) {
+        aiText = "Nma gap ! Mening ismim Gokki AI, sizniki nima?";
+      } 
+      else if (lowerInput.includes('zor')) {
+        aiText = "O'o'o'o nma boldi bugun km xursand qildi ";
+      } 
+      else if (lowerInput.includes('qale') || lowerInput.includes('qalesan') || lowerInput.includes('qalesiz') || lowerInput.includes('nma gap')) {
+        aiText = "Vapshe mazza, oziz qalesiz?";
+      } 
+      else {
+        aiText = `"${input}" yo torisi bu mavzuda bilmasakanman organb kelaman mani yaratgan odam ja unchali zooor Dasturchi mas lkn mani yarati siz manga salom , isming , qale kabi savollar bersangiz javob beraman`;
+      }
 
       setMessages(prev => [...prev, { role: 'ai', text: aiText }]);
       setLoading(false);
@@ -41,7 +58,7 @@ const App = () => {
     <div className="app-container">
       <aside className="sidebar">
         <div className="Sidebar_title">Gokki AI</div>
-        <button className="new-chat-btn" onClick={() => setMessages([])}>+ New Chat</button>
+        <button className="new-chat-btn" onClick={() => { setMessages([]); setUserName(null); }}>+ New Chat</button>
       </aside>
 
       <main className="main-content">
@@ -73,4 +90,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default App; 
