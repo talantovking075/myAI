@@ -3,7 +3,7 @@ import './App.css';
 
 const App = () => {
   const [input, setInput] = useState('');
-  const [userName, setUserName] = useState(null);
+  const [ , setUserName] = useState(null);
   const [messages, setMessages] = useState([
     { role: 'ai', text: 'Salom! Men Gokki AI man. Siz bilan suhbatlashishga tayyorman.' }
   ]);
