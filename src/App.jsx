@@ -15,7 +15,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [chatHistory] = useState([{ id: 1, title: "Gokki AI suhbati" }]);
-
+  loading && setTimeout(() => setLoading(false), 1000);
   const handleSend = () => {
     if (!input.trim()) return;
 
