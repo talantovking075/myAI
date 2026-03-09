@@ -1,0 +1,28 @@
+.input-area {
+  padding: 20px 20%;
+}
+
+.input-wrapper {
+  display: flex;
+  background: #0d0d0d;
+  padding: 5px;
+  border-radius: 12px;
+  border: 1px solid #333;
+}
+
+.input-wrapper input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 15px;
+  color: white;
+  outline: none;
+}
+
+.send-btn {
+  background: var(--accent-neon);
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  cursor: pointer;
+}

@@ -1,0 +1,76 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 400px;
+}
+
+.custom-checkbox input {
+  display: none;
+}
+
+.checkmark {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: #1e293b;
+  border: 1px solid #00f2ff;
+  border-radius: 4px;
+  margin-right: 10px;
+  cursor: pointer;
+  position: relative;
+  transition: 0.3s;
+}
+
+.custom-checkbox input:checked + .checkmark {
+  background-color: #00f2ff;
+}
+
+.settings-laber {
+  display: inline-block;
+  color: #fff;
+  font-size: 16px;
+} 
+
+.custom-checkbox input:checked + .checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 0;
+  left: 4px;
+  color: #000;
+  font-weight: bold;
+}
+
+.setting-option {
+  margin-bottom: 15px;
+}
+
+.setting-option p {
+  margin: 0 0 5px;
+}
+
+.close-btn {
+  background: var(--accent-neon);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.close-btn:hover {
+  background: rgba(0, 242, 255, 0.8);
+}

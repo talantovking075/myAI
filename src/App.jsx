@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Sidebar from './components/Sidebar/Sidebar';
+import ChatWindow from './components/ChatWindow/ChatWindow';
+import InputArea from './components/InputArea/InputArea';
+import Settings from './components/Settings/Settings';
+import About from './components/About/About'; 
 import './App.css';
 
 const App = () => {
   const [input, setInput] = useState('');
-  const [ , setUserName] = useState(null);
   const [messages, setMessages] = useState([
-    { role: 'ai', text: 'Salom! Men Gokki AI man. Siz bilan suhbatlashishga tayyorman.' }
+    { role: 'ai', text: 'Salom! Men Gokki AI man.' }
   ]);
   const [loading, setLoading] = useState(false);
-  
-  const messagesEndRef = useRef(null);
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-  useEffect(scrollToBottom, [messages]);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [chatHistory] = useState([{ id: 1, title: "Gokki AI suhbati" }]);
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -27,26 +28,27 @@ const App = () => {
       const lowerInput = input.toLowerCase();
       let aiText = "";
 
-      if (lowerInput.includes('mening ismim') || lowerInput.includes('ismim ')) {
-        const nameParts = input.split(' ');
-        const name = nameParts[nameParts.length - 1];
-        setUserName(name);
-        aiText = `${name} zorakanu! Nma ish qlas ${name}?`;
-      } 
-      else if (lowerInput.includes('salom')) {
+      if (lowerInput.includes('salom')) {
         aiText = "Assalomu alaykum! Ishlaringiz yaxshimi?";
-      } 
-      else if (lowerInput.includes('isming') || lowerInput.includes('ismingiz') || lowerInput.includes('ismin')) {
-        aiText = "Nma gap ! Mening ismim Gokki AI, sizniki nima?";
-      } 
-      else if (lowerInput.includes('zor')) {
-        aiText = "O'o'o'o nma boldi bugun km xursand qildi ";
-      } 
-      else if (lowerInput.includes('qale') || lowerInput.includes('qalesan') || lowerInput.includes('qalesiz') || lowerInput.includes('nma gap')) {
-        aiText = "Vapshe mazza, oziz qalesiz?";
-      } 
-      else {
-        aiText = `"${input}" yo torisi bu mavzuda bilmasakanman organb kelaman mani yaratgan odam ja unchali zooor Dasturchi mas lkn mani yarati siz manga salom , isming , qale kabi savollar bersangiz javob beraman`;
+      } else if (lowerInput.includes('isming') || lowerInput.includes('ismingiz')) {
+        aiText = "Mening ismim Gokki AI, sizniki nima?";
+      } else if (lowerInput.includes('qale') || lowerInput.includes('qalesan')) {
+        aiText = "Vapshe mazza, o'zingiz qalesiz?";
+      } else if (lowerInput.includes('sher') || lowerInput.includes('sher etib ber')) {
+        aiText = "Albatta, qanday sher kerak?";
+      } else if (lowerInput.includes('hazil') || lowerInput.includes('hazil qil')) {
+        aiText = "Hazil qilishni yaxshi ko'raman! Qanday hazil eshitishni xohlaysiz? dasturchilar haqida yoki oddiy hazilmi?";
+      } else if (lowerInput.includes('dasturchilar haqida') || lowerInput.includes('dasturchilarniki')) {
+        aiText = `Bir dasturchi do‘kon ochibdi. Do‘koniga birinchi mijoz kirib kelib so‘rabdi:
+— Kechirasiz, sizda non bormi?
+Dasturchi javob beribdi:
+— Yo‘q, bizda non yo‘q, lekin noni bor obyektni qidirish funksiyasi bor. Agar xohlasangiz, qidiruv tizimini yangilashim mumkin!
+Mijoz hayron bo‘lib:
+— Noni bor narsani ko‘rsating-chi? — debdi.
+Dasturchi:
+— Hozir, non_topish.exe ni ishga tushiraman... bir daqiqa... kuting... Error 404: Non topilmadi. Lekin xavotir olmang, kodda biroz o‘zgarish kiritamiz, ertaga kelasiz, balki chiqib qolar!`;
+      } else {
+        aiText = `"${input}" haqida hali ma'lumotim yo'q, lekin o'rganib olaman!`;
       }
 
       setMessages(prev => [...prev, { role: 'ai', text: aiText }]);
@@ -55,39 +57,43 @@ const App = () => {
   };
 
   return (
-    <div className="app-container">
-      <aside className="sidebar">
-        <div className="Sidebar_title">Gokki AI</div>
-        <button className="new-chat-btn" onClick={() => { setMessages([]); setUserName(null); }}>+ New Chat</button>
-      </aside>
+    <Router>
+      <div className="app-container">
+        <Sidebar
+          chatHistory={chatHistory}
+          onNewChat={() => setMessages([])}
+          onSettingsClick={() => setIsSettingsOpen(true)}
+        />
 
-      <main className="main-content">
-        <header className="chat-header"><h1>Gokki AI</h1></header>
-        
-        <div className="messages-container">
-          {messages.map((msg, index) => (
-            <div key={index} className={`message ${msg.role}`}>
-              <div className="bubble">{msg.text}</div>
-            </div>
-          ))}
-          {loading && <div className="message ai"><div className="bubble">Gokki yozmoqda...</div></div>}
-          <div ref={messagesEndRef} />
-        </div>
+        {isSettingsOpen && <Settings onClose={() => setIsSettingsOpen(false)} />}
 
-        <div className="input-area">
-          <div className="input-wrapper">
-            <input 
-              value={input} 
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="Message AI..." 
-            />
-            <button className="send-btn" onClick={handleSend}>➔</button>
-          </div>
-        </div>
-      </main>
-    </div>
+        <main className="main-content">
+          <header className="chat-header"><h1 className='chat-title'>Gokki AI</h1></header>
+
+          <Routes>
+            {/* Asosiy chat yo'li */}
+            <Route path="/" element={
+              <>
+                <ChatWindow messages={messages} />
+                <InputArea input={input} setInput={setInput} onSend={handleSend} />
+              </>
+            } />
+            
+            {/* Chat ID bilan yo'l */}
+            <Route path="/chat/:id" element={
+              <>
+                <ChatWindow messages={messages} />
+                <InputArea input={input} setInput={setInput} onSend={handleSend} />
+              </>
+            } />
+            
+            {/* About sahifasi yo'li */}
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 };
 
-export default App; 
+export default App;
