@@ -1,111 +1,120 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar/Sidebar';
 import ChatWindow from './components/ChatWindow/ChatWindow';
 import InputArea from './components/InputArea/InputArea';
 import Settings from './components/Settings/Settings';
 import About from './components/About/About';
-import Profile from './components/Profile/Profile';
+import Login from './components/Login/Login'; 
+import Register from './Register/Register'; 
+import Admin from './Admin/Admin'; 
+import Profile from './components/Profile/Profile'; // <-- 1. IMPORT QILINDI
+import { getAIResponse } from './ChatLogic';
 import './App.css';
 
 const App = () => {
+  const [users, setUsers] = useState(() => {
+    const saved = localStorage.getItem('gokki_users');
+    const adminAccount = { user: 'behruz', pass: 'admin777', role: 'admin' };
+    return saved ? JSON.parse(saved) : [adminAccount];
+  });
+
+  const [currentUser, setCurrentUser] = useState(() => {
+    const saved = localStorage.getItem('gokki_current_user');
+    return saved ? JSON.parse(saved) : null;
+  });
+
   const [input, setInput] = useState('');
-  // Xotiradan eski xabarlarni yuklash
   const [messages, setMessages] = useState(() => {
     const saved = localStorage.getItem('gokki_messages');
-    return saved ? JSON.parse(saved) : [{ role: 'ai', text: 'Salom! Men Gokki AI man. Sizga qanday yordam bera olaman?' }];
+    return saved ? JSON.parse(saved) : [{ role: 'ai', text: 'Salom! Men Gokki AI. Sizga qanday yordam bera olaman?' }];
   });
+
   const [loading, setLoading] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [chatHistory] = useState([{ id: 1, title: "Asosiy suhbat" }]);
 
-  const API_KEY = "AIzaSyBeS1rJbT8veMkgPmJtMYmzvnNeUxRixas";
-
-  // Xabarlar o'zgarganda xotiraga saqlash
   useEffect(() => {
+    localStorage.setItem('gokki_users', JSON.stringify(users));
     localStorage.setItem('gokki_messages', JSON.stringify(messages));
-  }, [messages]);
+    if (currentUser) localStorage.setItem('gokki_current_user', JSON.stringify(currentUser));
+    else localStorage.removeItem('gokki_current_user');
+  }, [users, messages, currentUser]);
 
-  const handleSend = async () => {
+  const handleSend = () => {
     if (!input.trim() || loading) return;
 
     const userMsg = { role: 'user', text: input };
     setMessages(prev => [...prev, userMsg]);
-    const userPrompt = input;
+    const currentInput = input;
     setInput('');
     setLoading(true);
 
-    try {
-      // 404 xatosini yechimi: Model nomidan keyin :generateContent bo'lishi shart!
-      const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
-
-      const response = await fetch(URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `Sening isming Gokki AI. Seni Talantov Behruz 2026-yilda yaratgan (u 2010-yilda tug'ilgan). 
-              Har doim o'zbek tilida javob ber. Foydalanuvchi: ${userPrompt}`
-            }]
-          }]
-        })
-      });
-
-      const data = await response.json();
-
-      if (data.candidates && data.candidates[0].content) {
-        const aiText = data.candidates[0].content.parts[0].text;
-        setMessages(prev => [...prev, { role: 'ai', text: aiText }]);
-      } else {
-        throw new Error("API xatosi");
-      }
-    } catch (error) {
-      console.error("Xatolik:", error);
-      setMessages(prev => [...prev, { role: 'ai', text: "Kechirasiz, ulanishda xato bo'ldi. Internetni tekshiring." }]);
-    } finally {
+    setTimeout(() => {
+      const aiText = getAIResponse(currentInput);
+      setMessages(prev => [...prev, { role: 'ai', text: aiText }]);
       setLoading(false);
+    }, 600);
+  };
+
+  const logout = () => {
+    setCurrentUser(null);
+    setMessages([{ role: 'ai', text: 'Tizimdan chiqildi. Qaytadan kiring!' }]);
+  };
+
+  const deleteUser = (username) => {
+    if (username === 'behruz') return alert("Adminni o'chirib bo'lmaydi!");
+    if (window.confirm(`${username}ni o'chirmoqchimisiz?`)) {
+      setUsers(users.filter(u => u.user !== username));
     }
   };
 
   return (
     <Router>
-      <div className="app-container">
-        <Sidebar
-          chatHistory={chatHistory}
-          onNewChat={() => {
-            setMessages([{ role: 'ai', text: 'Yangi suhbat boshlandi!' }]);
-            localStorage.removeItem('gokki_messages');
-          }}
-          onSettingsClick={() => setIsSettingsOpen(true)}
-        />
+      <Routes>
+        <Route path="/" element={
+          !currentUser ? <Login users={users} setCurrentUser={setCurrentUser} /> : 
+          (currentUser.role === 'admin' ? <Navigate to="/admin" /> : <Navigate to="/chat" />)
+        } />
 
-        {isSettingsOpen && <Settings onClose={() => setIsSettingsOpen(false)} />}
+        <Route path="/register" element={<Register setUsers={setUsers} users={users} />} />
 
-        <main className="main-content">
-          <header className="chat-header">
-            <h1 className='chat-title'>Gokki AI</h1>
-          </header>
+        <Route path="/admin" element={
+          currentUser?.role === 'admin' ? (
+            <Admin users={users} logout={logout} onDelete={deleteUser} />
+          ) : <Navigate to="/" />
+        } />
 
-          <Routes>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/" element={
-              <>
+        {/* PROFILE YO'NALISHI QO'SHILDI */}
+        <Route path="/profile" element={
+          currentUser ? <Profile user={currentUser} /> : <Navigate to="/" />
+        } />
+
+        <Route path="/chat" element={
+          currentUser ? (
+            <div className="app-container">
+              <Sidebar 
+                userName={currentUser.user}
+                onLogout={logout}
+                onNewChat={() => setMessages([{ role: 'ai', text: 'Yangi suhbat boshlandi!' }])}
+                onSettingsClick={() => setIsSettingsOpen(true)}
+                chatHistory={messages.length > 1 ? [{id: 1, title: "Joriy suhbat"}] : []}
+              />
+              {isSettingsOpen && <Settings onClose={() => setIsSettingsOpen(false)} />}
+              <main className="main-content">
+                <header className="chat-header">
+                  <h1 className='chat-title'>Gokki AI</h1>
+                </header>
                 <ChatWindow messages={messages} />
                 <InputArea input={input} setInput={setInput} onSend={handleSend} />
-                {loading && <div style={{textAlign: 'center', color: '#00f2ff', paddingBottom: '10px'}}>Gokki yozmoqda...</div>}
-              </>
-            } />
-            <Route path="/chat/:id" element={
-              <>
-                <ChatWindow messages={messages} />
-                <InputArea input={input} setInput={setInput} onSend={handleSend} />
-              </>
-            } />
-            <Route path="/about" element={<About />} />
-          </Routes>
-        </main>
-      </div>
+                {loading && <div className="loading-bar">Gokki o'ylamoqda...</div>}
+              </main>
+            </div>
+          ) : <Navigate to="/" />
+        } />
+
+        <Route path="/about" element={<About />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </Router>
   );
 };

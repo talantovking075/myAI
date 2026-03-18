@@ -5,10 +5,13 @@ import './SettingsModal.css';
 const Settings = ({ onClose }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profile');
-  const [userName] = useState(localStorage.getItem('userName') || 'Foydalanuvchi');
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('theme') !== 'light';
-  });
+  
+  // Ma'lumotlarni yuklash
+  const userName = localStorage.getItem('userName') || 'Foydalanuvchi';
+  const userAvatar = localStorage.getItem('userAvatar') || 'https://via.placeholder.com/80';
+  const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') !== 'light');
+  const [enterToSend, setEnterToSend] = useState(true);
+  const [creativity, setCreativity] = useState(0.7);
 
   useEffect(() => {
     const theme = isDarkMode ? 'dark' : 'light';
@@ -34,29 +37,30 @@ const Settings = ({ onClose }) => {
         </div>
 
         <div className="modal-body">
+          {/* PROFIL TAB */}
           {activeTab === 'profile' && (
             <div className="tab-content">
               <h3>Profil ma'lumotlari</h3>
               <div className="profile-preview-card">
                 <div className="profile-info-main">
-                  <div className="profile-avatar">{userName.charAt(0).toUpperCase()}</div>
+                  {/* DOIRA ICHIDA RASM */}
+                  <div className="avatar-circle">
+                    <img src={userAvatar} alt="User" className="avatar-img" />
+                  </div>
                   <div className="profile-details">
                     <h4>{userName}</h4>
                     <p>ID: #83429</p>
-                    <span className="status-online">Onlayn</span>
+                    <span className="status-online">● Onlayn</span>
                   </div>
                 </div>
                 <button className="edit-profile-btn" onClick={handleEditProfile}>
                   👤 Profilni tahrirlash
                 </button>
               </div>
-              <div className="profile-stats">
-                <div className="stat-item"><span>Xabarlar</span><strong>124</strong></div>
-                <div className="stat-item"><span>A'zolik</span><strong>Bepul</strong></div>
-              </div>
             </div>
           )}
 
+          {/* UMUMIY TAB */}
           {activeTab === 'general' && (
             <div className="tab-content">
               <h3>Umumiy sozlamalar</h3>
@@ -65,21 +69,11 @@ const Settings = ({ onClose }) => {
                   <span>Tungi rejim</span>
                   <p>Mavzuni qorong'u holatga o'tkazish</p>
                 </div>
-                <input type="checkbox" className="switch" checked={isDarkMode} onChange={() => setIsDarkMode(!isDarkMode)} />
+                <input type="checkbox" className="simple-switch" checked={isDarkMode} onChange={() => setIsDarkMode(!isDarkMode)} />
               </div>
               <div className="setting-item">
-                <div className="setting-info">
-                  <span>Enter orqali yuborish</span>
-                  <p>Xabarni tezkor yuborish rejimi</p>
-                </div>
-                <input type="checkbox" className="switch" defaultChecked />
-              </div>
-              <div className="setting-item">
-                <span>Interfeys tili</span>
-                <select className="custom-select">
-                  <option>O'zbekcha</option>
-                  <option>English</option>
-                </select>
+                <span>Enter orqali yuborish</span>
+                <input type="checkbox" className="simple-switch" checked={enterToSend} onChange={() => setEnterToSend(!enterToSend)} />
               </div>
             </div>
           )}
@@ -87,25 +81,20 @@ const Settings = ({ onClose }) => {
           {activeTab === 'ai' && (
             <div className="tab-content">
               <h3>AI Parametrlari</h3>
-              <div className="setting-item">
-                <span>Model</span>
-                <select className="custom-select">
-                  <option>Gokki-GPT 4o</option>
-                  <option>Gokki-Lite</option>
-                </select>
-              </div>
               <div className="setting-item column">
-                <div className="label-row"><span>Creativity</span><span className="value-badge">0.7</span></div>
-                <input type="range" min="0" max="1" step="0.1" defaultValue="0.7" className="custom-range" />
+                <span>Ijodiylik (Creativity)</span>
+                <div className="range-wrapper">
+                  <input type="range" min="0" max="1" step="0.1" value={creativity} onChange={(e) => setCreativity(e.target.value)} className="custom-range" />
+                  <span className="value-badge">{creativity}</span>
+                </div>
               </div>
               <button className="clear-history-btn">🗑️ Chatni tozalash</button>
             </div>
           )}
         </div>
-
       </div>
     </div>
   );
 };
 
-export default Settings;
+export default Settings; 

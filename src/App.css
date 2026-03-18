@@ -93,6 +93,59 @@ body {
   margin: 0 auto;
 }
 
+/* Foydalanuvchi qatori (Header ichida) */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 20px;
+  background: rgba(18, 18, 18, 0.8);
+  border-bottom: 1px solid #333;
+}
+
+.user-info span {
+  color: #00f2ff;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  text-transform: capitalize;
+}
+
+/* Logout tugmasini neon qilish */
+.logout-mini {
+  background: transparent;
+  border: 1px solid #ff4d4d;
+  color: #ff4d4d;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.logout-mini:hover {
+  background: #ff4d4d;
+  color: white;
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+  transform: scale(1.05);
+}
+
+.loading-bar {
+  text-align: center;
+  color: #00f2ff;
+  padding: 15px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.4; text-shadow: 0 0 5px #00f2ff; }
+  50% { opacity: 1; text-shadow: 0 0 15px #00f2ff; }
+  100% { opacity: 0.4; text-shadow: 0 0 5px #00f2ff; }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .app-container {

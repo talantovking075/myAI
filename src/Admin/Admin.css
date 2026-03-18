@@ -1,0 +1,543 @@
+:root {
+  --neon-blue: #00f2ff;
+  --neon-red: #ff4d4d;
+  --bg-dark: #0a0b10;
+  --card-bg: #16181d;
+}
+
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg-dark);
+  color: #fff;
+}
+
+/* Jadvaldagi avatar stili */
+.user-info-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-mini-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 1px solid #00f2ff; /* Neon ko'k chiziq */
+  object-fit: cover;
+  box-shadow: 0 0 5px rgba(0, 242, 255, 0.2);
+}
+
+/* Modal ichidagi katta avatar stili */
+.avatar-big-container {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  overflow: hidden;
+  border: 3px solid #00f2ff;
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+}
+
+.avatar-big-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-page {
+  padding: 40px 20px;
+  background-color: #0b0d11;
+  min-height: 100vh;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+.profile-header {
+  max-width: 1000px;
+  margin: 0 auto 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-back-btn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.profile-back-btn:hover {
+  border-color: #00f2ff;
+  color: #00f2ff;
+}
+
+/* Profil Card */
+.profile-content-card {
+  max-width: 1000px;
+  margin: 0 auto 50px;
+  background: #111418;
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  gap: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.profile-avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.avatar-display {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: #1a222c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  font-weight: bold;
+  color: #00f2ff;
+  border: 3px solid #00f2ff;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.change-avatar-btn {
+  background: rgba(0, 242, 255, 0.1);
+  color: #00f2ff;
+  border: 1px solid #00f2ff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Form */
+.profile-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-field label {
+  color: #888;
+  font-size: 14px;
+}
+
+.input-field input {
+  background: #0b0d11;
+  border: 1px solid #333;
+  padding: 12px;
+  border-radius: 10px;
+  color: #fff;
+  outline: none;
+}
+
+.input-field input:focus {
+  border-color: #00f2ff;
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.1);
+}
+
+.profile-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.save-profile-btn {
+  background: #00f2ff;
+  color: #000;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: transparent;
+  color: #888;
+  border: 1px solid #333;
+  padding: 12px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Tariflar */
+.section-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+}
+
+.pricing-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.pricing-card {
+  background: #111418;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+  position: relative;
+  transition: 0.3s;
+}
+
+.pricing-card.active {
+  border-color: #00f2ff;
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
+}
+
+.pricing-card.popular {
+  transform: scale(1.05);
+  border-color: #00f2ff;
+}
+
+.popular-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #00f2ff;
+  color: #000;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.price span {
+  font-size: 1rem;
+  color: #666;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.features li {
+  color: #ccc;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.plan-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.pricing-card.active .plan-btn {
+  background: #00f2ff;
+  color: #000;
+  border: none;
+}
+
+.role-badge.admin {
+  background: rgba(0, 242, 255, 0.2);
+  color: #00f2ff;
+  border: 1px solid #00f2ff;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 260px;
+  background: #0f1117;
+  border-right: 1px solid rgba(0, 242, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  padding: 30px 20px;
+}
+
+.admin-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--neon-blue);
+  text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.nav-item {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  background: transparent;
+  border: none;
+  color: #888;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-item.active, .nav-item:hover {
+  background: rgba(0, 242, 255, 0.1);
+  color: var(--neon-blue);
+}
+
+.nav-item.logout {
+  margin-top: auto;
+  color: var(--neon-red);
+}
+
+/* Main Content */
+.admin-main {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.admin-header h2 {
+  font-size: 2rem;
+  background: linear-gradient(90deg, #fff, var(--neon-blue));
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.table-wrapper {
+  background: var(--card-bg);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  width: 100%;
+}
+.avatar-img{
+  width: 40px;
+  height: 40px;
+  background: var(--neon-blue);
+  color: #000;
+  font-size: 1.2rem;
+  font-weight: 800;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th {
+  text-align: left;
+  padding: 15px;
+  color: var(--neon-blue);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+/* Settings Avatar */
+.avatar-circle {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #00f2ff;
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-mini-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #00f2ff;
+  object-fit: cover;
+}
+
+.simple-switch {
+  width: 20px;
+  height: 20px;
+  accent-color: #00f2ff;
+  cursor: pointer;
+}
+
+.table-row {
+  transition: 0.3s;
+}
+
+.table-row:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.user-table td {
+  padding: 18px 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.user-name-cell {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Badges */
+.role-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.role-badge.admin { background: rgba(0, 242, 255, 0.2); color: var(--neon-blue); border: 1px solid var(--neon-blue); }
+.role-badge.user { background: rgba(255, 255, 255, 0.1); color: #ccc; }
+
+/* Buttons */
+.actions-cell {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-view {
+  background: transparent;
+  border: 1px solid var(--neon-blue);
+  color: var(--neon-blue);
+  padding: 6px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-view:hover {
+  background: var(--neon-blue);
+  color: #000;
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+}
+
+.btn-delete {
+  background: transparent;
+  border: 1px solid var(--neon-red);
+  color: var(--neon-red);
+  padding: 6px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-delete:hover {
+  background: var(--neon-red);
+  color: #fff;
+  box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.profile-card {
+  background: #1c1f26;
+  width: 350px;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  text-align: center;
+  animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.avatar-big {
+  width: 70px;
+  height: 70px;
+  background: var(--neon-blue);
+  color: #000;
+  font-size: 2rem;
+  font-weight: 800;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-item {
+  margin: 15px 0;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 8px;
+}
+
+.info-item label { color: #666; font-size: 0.8rem; display: block; }
+.info-item span { color: #fff; font-size: 1.1rem; }
+.pass-text { color: var(--neon-blue) !important; font-family: monospace; }
+
+.btn-close {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
