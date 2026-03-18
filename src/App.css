@@ -1,17 +1,31 @@
 :root {
-  --bg-color: #050505;
-  --sidebar-bg: #0d0d0d;
-  --text-main: #e0e0e0;
+  /* Dark mode (Asosiy) */
+  --bg-color: #0a0a0a;
+  --sidebar-bg: #111111;
+  --text-main: #ffffff;
+  --text-secondary: #b0b0b0;
+  --input-bg: #151515;
+  --border-color: #222222;
+  --bubble-ai: #1a1a1a;
   --accent-neon: #00f2ff;
-  --border: #222;
+  --text-placeholder: #555555;
 }
 
-.light-theme {
-  --bg-color: #ffffff;
-  --sidebar-bg: #f4f4f4;
-  --text-main: #111;
-  --accent-neon: #2563eb;
-  --border: #ddd;
+[data-theme='light'] {
+  /* Light mode */
+  --bg-color: #f9fafb;       
+  --sidebar-bg: #ffffff;   
+  --text-main: #1f2937;   
+  --text-secondary: #4b5563;
+  --text-placeholder: #9ca3af; 
+  --input-bg: #ffffff;
+  --border-color: #e5e7eb;  
+  --bubble-ai: #ffffff;    
+  --accent-neon: #0891b2;  
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -19,41 +33,96 @@ body {
   padding: 0;
   background-color: var(--bg-color);
   color: var(--text-main);
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   transition: background 0.3s, color 0.3s;
+  /* Scroll silliq bo'lishi uchun */
+  overflow-x: hidden; 
 }
 
 .app-container {
   display: flex;
   height: 100vh;
-  overflow: hidden;
+  width: 100vw;
+  overflow: hidden; /* Asosiy oyna qimirlamasligi uchun */
 }
 
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  transition: 0.3s;
+  flex-shrink: 0;
+}
+
+/* Main Content Area */
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
+  background-color: var(--bg-color);
+  /* Ichki kontent ko'paysa scroll chiqishi uchun */
+  overflow-y: auto; 
 }
 
 .chat-window {
   flex: 1;
   display: flex;
   flex-direction: column;
-  position: relative;
-  overflow: hidden;
+  height: 100%;
 }
 
 .chat-title {
   padding: 20px;
-  font-size: 34px;
+  font-size: clamp(24px, 5vw, 34px);
   font-style: italic;
   font-weight: bold;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-color);
   text-align: center;
+  color: var(--text-main);
 }
 
+/* About sahifasi va boshqa sahifalar sig'ishi uchun */
+.page-wrapper {
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .app-container { flex-direction: column; }
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .main-content {
+    height: calc(100vh - 60px);}
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
 }

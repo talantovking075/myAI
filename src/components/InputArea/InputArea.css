@@ -1,28 +1,67 @@
 .input-area {
   padding: 20px 20%;
+  background-color: var(--bg-color);
+  transition: background 0.3s ease;
 }
 
 .input-wrapper {
   display: flex;
-  background: #0d0d0d;
-  padding: 5px;
-  border-radius: 12px;
-  border: 1px solid #333;
+  align-items: center;
+  background-color: var(--input-bg);
+  padding: 8px 15px;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.input-wrapper:focus-within {
+  border-color: var(--accent-neon);
+  box-shadow: 0 0 0 2px rgba(0, 242, 255, 0.1);
 }
 
 .input-wrapper input {
   flex: 1;
   background: transparent;
   border: none;
-  padding: 15px;
-  color: white;
+  padding: 12px 5px;
+  color: var(--text-main);
+  font-size: 16px;
   outline: none;
+  width: 100%;
+}
+
+.input-wrapper input::placeholder {
+  color: var(--text-placeholder);
+  opacity: 0.7;
 }
 
 .send-btn {
-  background: var(--accent-neon);
+  background-color: var(--accent-neon);
+  color: #000;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  margin-left: 10px;
+}
+
+.send-btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.send-btn:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+  .input-area {
+    padding: 15px 10px;
+  }
 }
