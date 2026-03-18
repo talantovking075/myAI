@@ -65,7 +65,7 @@ export const getAIResponse = (userInput) => {
         "uka": "Uka - oilaning kichik quvonchi.",
         "opa": "Opa - onadek mehribon insondir.",
         "singil": "Singil - oilaning eng erka va shirin a'zosi.",
-        "maktab": "Maktabda o'qish - kelajak poydevori.",
+        "maktab3": "Maktabda oqish - kelajak poydevori.",
         "universitet": "Oliy ma'lumot olish kasbiy o'sishga yordam beradi.",
         "ish": "Yaxshi ish topish uchun ko'p o'qish va mehnat qilish kerak.",
         "pul topish": "Halol mehnat bilan topilgan pulning barakasi bo'ladi.",
