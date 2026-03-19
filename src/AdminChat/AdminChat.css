@@ -1,0 +1,75 @@
+.chat-container-responsive {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  background: var(--glass, white);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.chat-header-info {
+  background: #ffb7c5;
+  padding: 15px 20px;
+  color: white;
+}
+
+.chat-messages-area {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Rasm o'lchamini jilovlash */
+.chat-mini-avatar {
+  width: 35px !important;
+  height: 35px !important;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.message-row { display: flex; gap: 10px; max-width: 85%; }
+.my-msg { align-self: flex-end; flex-direction: row-reverse; }
+
+.msg-bubble {
+  padding: 10px 15px;
+  border-radius: 15px;
+  background: #f0f2f5;
+  position: relative;
+}
+
+.my-msg .msg-bubble { background: #ffb7c5; color: white; }
+
+.msg-author { font-size: 10px; font-weight: bold; display: block; margin-bottom: 3px; }
+.msg-time { font-size: 9px; opacity: 0.7; float: right; margin-top: 5px; }
+
+.chat-input-wrapper {
+  padding: 15px;
+  display: flex;
+  gap: 10px;
+  border-top: 1px solid #eee;
+}
+
+.chat-input-wrapper input {
+  flex: 1;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.chat-input-wrapper button {
+  padding: 0 20px;
+  border-radius: 20px;
+  border: none;
+  background: #d85a7f;
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .chat-container-responsive { height: 70vh; }
+}

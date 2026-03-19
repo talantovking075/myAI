@@ -6,7 +6,6 @@ const AddDash = ({ users }) => {
   return (
     <div className="dash-wrapper">
       <div className="dash-header">
-        <h1>Dashboard Ko'rsatkichlari</h1>
         <p>Tizimning umumiy holati va jonli statistika</p>
       </div>
 

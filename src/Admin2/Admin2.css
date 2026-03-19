@@ -1,0 +1,255 @@
+:root {
+  --sakura-main: #ffb7c5;
+  --sakura-dark: #d85a7f;
+  --sakura-text: #5d4037;
+  --sakura-bg: #fff5f7;
+  --glass: rgba(255, 255, 255, 0.9);
+  --shadow: 0 10px 30px rgba(216, 90, 127, 0.1);
+}
+
+.asst-container {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fff0f3 0%, #ffe4e8 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--sakura-text);
+}
+
+.asst-sidebar {
+  width: 280px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border-right: 2px solid #ffeef1;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 20px;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.02);
+}
+
+.asst-logo-text {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--sakura-dark);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Profil kartasi va Avatar fix */
+.asst-profile-card {
+  background: white;
+  padding: 25px 15px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  margin-bottom: 30px;
+  border: 1px solid #ffecf0;
+}
+
+.asst-avatar-img {
+  width: 90px !important; /* Rasm kattarib ketmasligi uchun */
+  height: 90px !important;
+  border-radius: 50%;
+  border: 4px solid var(--sakura-main);
+  object-fit: cover;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+/* JADVALDAGI RASMLAR (MUHIM!) */
+.mini-avatar {
+  width: 40px !important; /* Jadvalda rasm normallashadi */
+  height: 40px !important;
+  border-radius: 50%;
+  border: 2px solid var(--sakura-main);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.user-td {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Navigatsiya */
+.asst-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.asst-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border: none;
+  background: transparent;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #8d6e63;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.asst-menu-btn.active {
+  background: var(--sakura-main);
+  color: white;
+  box-shadow: 0 8px 15px rgba(255, 183, 197, 0.4);
+}
+
+/* Asosiy kontent */
+.asst-main-content {
+  flex: 1;
+  padding: 40px 60px;
+  overflow-y: auto;
+}
+
+.asst-table-container {
+  background: white;
+  border-radius: 30px;
+  padding: 10px;
+  box-shadow: var(--shadow);
+}
+
+.asst-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.asst-table th {
+  padding: 20px;
+  color: var(--sakura-dark);
+  border-bottom: 2px solid var(--sakura-bg);
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.asst-table td {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--sakura-bg);
+}
+
+.role-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 10px;
+}
+.role-pill.admin { background: #ffe4e1; color: #d85a7f; }
+.role-pill.assistant { background: #e0f2f1; color: #00897b; }
+
+.logout-special {
+  margin-top: auto;
+  color: var(--sakura-dark);
+  border: 1px solid #ffdae0 !important;
+}
+
+/* ... Oldingi :root va asosiy stillar saqlanadi ... */
+
+.mobile-menu-toggle {
+  display: none; /* Kompyuterda ko'rinmaydi */
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  background: var(--sakura-main);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+/* TABLE RESPONSIVE FIX */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto; /* Jadval sig'masa, yonlamasiga suriladi */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+@media (max-width: 1024px) {
+  .asst-sidebar {
+    width: 240px;
+    padding: 30px 15px;
+  }
+  .asst-main-content {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: block; /* Telefonda menyu tugmasi chiqadi */
+  }
+
+  .asst-sidebar {
+    position: fixed;
+    left: -280px; /* Sidebar berkitiladi */
+    top: 0;
+    bottom: 0;
+    z-index: 999;
+    transition: 0.3s ease;
+  }
+
+  .asst-sidebar.open {
+    left: 0; /* Menyu ochiladi */
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(3px);
+    z-index: 998;
+  }
+
+  .asst-main-content {
+    padding: 80px 15px 20px; /* Tepadan joy tashlaymiz */
+  }
+
+  .asst-header {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 25px;
+  }
+
+  .asst-header h1 {
+    font-size: 20px;
+  }
+
+  .asst-table th, .asst-table td {
+    padding: 12px 10px;
+    font-size: 13px;
+  }
+
+  .mini-avatar {
+    width: 30px !important;
+    height: 30px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .asst-header h1 {
+    font-size: 18px;
+  }
+  
+  .status-indicator {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  /* Chat oynasini telefonda balandligini to'g'irlash */
+  .admin-chat-box {
+    height: 70vh;
+  }
+}

@@ -4,19 +4,43 @@ import Sidebar from './components/Sidebar/Sidebar';
 import ChatWindow from './components/ChatWindow/ChatWindow';
 import InputArea from './components/InputArea/InputArea';
 import Settings from './components/Settings/Settings';
-import About from './components/About/About';
 import Login from './components/Login/Login'; 
 import Register from './Register/Register'; 
 import Admin from './Admin/Admin'; 
-import Profile from './components/Profile/Profile'; // <-- 1. IMPORT QILINDI
+import Admin2 from './Admin2/Admin2'; 
+import Profile from './components/Profile/Profile'; 
 import { getAIResponse } from './ChatLogic';
 import './App.css';
 
 const App = () => {
   const [users, setUsers] = useState(() => {
     const saved = localStorage.getItem('gokki_users');
-    const adminAccount = { user: 'behruz', pass: 'admin777', role: 'admin' };
-    return saved ? JSON.parse(saved) : [adminAccount];
+    const initialAccounts = [
+      { 
+        user: 'behruz', 
+        pass: 'admin777', 
+        role: 'admin', 
+        avatar: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png' 
+      },
+      { 
+        user: 'Sakura', 
+        pass: 'pink777', 
+        role: 'assistant', 
+        avatar: 'https://cdn-icons-png.flaticon.com/512/6997/6997662.png' 
+      }
+    ];
+
+    if (!saved) return initialAccounts;
+    const parsed = JSON.parse(saved);
+    
+    // Initial accounts har doim bo'lishini ta'minlash
+    const merged = [...parsed];
+    initialAccounts.forEach(init => {
+      if (!merged.find(u => u.user.toLowerCase() === init.user.toLowerCase())) {
+        merged.push(init);
+      }
+    });
+    return merged;
   });
 
   const [currentUser, setCurrentUser] = useState(() => {
@@ -24,47 +48,43 @@ const App = () => {
     return saved ? JSON.parse(saved) : null;
   });
 
-  const [input, setInput] = useState('');
   const [messages, setMessages] = useState(() => {
     const saved = localStorage.getItem('gokki_messages');
-    return saved ? JSON.parse(saved) : [{ role: 'ai', text: 'Salom! Men Gokki AI. Sizga qanday yordam bera olaman?' }];
+    return saved ? JSON.parse(saved) : [{ role: 'ai', text: 'Salom! Men Gokki AI 🌸' }];
   });
 
+  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('gokki_users', JSON.stringify(users));
     localStorage.setItem('gokki_messages', JSON.stringify(messages));
-    if (currentUser) localStorage.setItem('gokki_current_user', JSON.stringify(currentUser));
-    else localStorage.removeItem('gokki_current_user');
+    if (currentUser) {
+      localStorage.setItem('gokki_current_user', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('gokki_current_user');
+    }
   }, [users, messages, currentUser]);
 
   const handleSend = () => {
     if (!input.trim() || loading) return;
-
     const userMsg = { role: 'user', text: input };
     setMessages(prev => [...prev, userMsg]);
-    const currentInput = input;
     setInput('');
     setLoading(true);
-
     setTimeout(() => {
-      const aiText = getAIResponse(currentInput);
-      setMessages(prev => [...prev, { role: 'ai', text: aiText }]);
+      setMessages(prev => [...prev, { role: 'ai', text: getAIResponse(input) }]);
       setLoading(false);
     }, 600);
   };
 
-  const logout = () => {
-    setCurrentUser(null);
-    setMessages([{ role: 'ai', text: 'Tizimdan chiqildi. Qaytadan kiring!' }]);
-  };
+  const logout = () => setCurrentUser(null);
 
   const deleteUser = (username) => {
-    if (username === 'behruz') return alert("Adminni o'chirib bo'lmaydi!");
+    if (username === 'behruz') return alert("Asosiy adminni o'chirib bo'lmaydi!");
     if (window.confirm(`${username}ni o'chirmoqchimisiz?`)) {
-      setUsers(users.filter(u => u.user !== username));
+      setUsers(prev => prev.filter(u => u.user !== username));
     }
   };
 
@@ -73,47 +93,25 @@ const App = () => {
       <Routes>
         <Route path="/" element={
           !currentUser ? <Login users={users} setCurrentUser={setCurrentUser} /> : 
-          (currentUser.role === 'admin' ? <Navigate to="/admin" /> : <Navigate to="/chat" />)
+          (currentUser.role === 'admin' ? <Navigate to="/admin" /> : 
+           currentUser.role === 'assistant' ? <Navigate to="/admin2" /> : <Navigate to="/chat" />)
         } />
-
         <Route path="/register" element={<Register setUsers={setUsers} users={users} />} />
-
-        <Route path="/admin" element={
-          currentUser?.role === 'admin' ? (
-            <Admin users={users} logout={logout} onDelete={deleteUser} />
-          ) : <Navigate to="/" />
-        } />
-
-        {/* PROFILE YO'NALISHI QO'SHILDI */}
-        <Route path="/profile" element={
-          currentUser ? <Profile user={currentUser} /> : <Navigate to="/" />
-        } />
-
+        <Route path="/admin" element={currentUser?.role === 'admin' ? <Admin users={users} currentUser={currentUser} logout={logout} onDelete={deleteUser} /> : <Navigate to="/" />} />
+        <Route path="/admin2" element={currentUser?.role === 'assistant' ? <Admin2 users={users} currentUser={currentUser} logout={logout} /> : <Navigate to="/" />} />
+        <Route path="/profile" element={currentUser ? <Profile user={currentUser} setUser={setCurrentUser} /> : <Navigate to="/" />} />
         <Route path="/chat" element={
           currentUser ? (
             <div className="app-container">
-              <Sidebar 
-                userName={currentUser.user}
-                onLogout={logout}
-                onNewChat={() => setMessages([{ role: 'ai', text: 'Yangi suhbat boshlandi!' }])}
-                onSettingsClick={() => setIsSettingsOpen(true)}
-                chatHistory={messages.length > 1 ? [{id: 1, title: "Joriy suhbat"}] : []}
-              />
+              <Sidebar userName={currentUser.user} userAvatar={currentUser.avatar} onLogout={logout} onSettingsClick={() => setIsSettingsOpen(true)} />
               {isSettingsOpen && <Settings onClose={() => setIsSettingsOpen(false)} />}
               <main className="main-content">
-                <header className="chat-header">
-                  <h1 className='chat-title'>Gokki AI</h1>
-                </header>
                 <ChatWindow messages={messages} />
                 <InputArea input={input} setInput={setInput} onSend={handleSend} />
-                {loading && <div className="loading-bar">Gokki o'ylamoqda...</div>}
               </main>
             </div>
           ) : <Navigate to="/" />
         } />
-
-        <Route path="/about" element={<About />} />
-        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
