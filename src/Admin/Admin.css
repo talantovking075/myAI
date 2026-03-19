@@ -13,7 +13,6 @@
   color: #fff;
 }
 
-/* Jadvaldagi avatar stili */
 .user-info-wrapper {
   display: flex;
   align-items: center;
@@ -24,12 +23,11 @@
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  border: 1px solid #00f2ff; /* Neon ko'k chiziq */
+  border: 1px solid #00f2ff;
   object-fit: cover;
   box-shadow: 0 0 5px rgba(0, 242, 255, 0.2);
 }
 
-/* Modal ichidagi katta avatar stili */
 .avatar-big-container {
   width: 100px;
   height: 100px;
@@ -38,6 +36,37 @@
   overflow: hidden;
   border: 3px solid #00f2ff;
   box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 12px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  color: #888;
+  font-size: 15px;
+}
+
+.nav-item:hover {
+  background: rgba(0, 242, 255, 0.05);
+  color: var(--neon-blue);
+}
+
+.nav-item.active {
+  background: rgba(0, 242, 255, 0.1);
+  color: var(--neon-blue);
+  border-color: var(--neon-blue);
 }
 
 .avatar-big-img {
@@ -76,7 +105,6 @@
   color: #00f2ff;
 }
 
-/* Profil Card */
 .profile-content-card {
   max-width: 1000px;
   margin: 0 auto 50px;
@@ -127,7 +155,6 @@
   font-size: 14px;
 }
 
-/* Form */
 .profile-form {
   flex: 1;
   display: flex;
@@ -185,7 +212,6 @@
   cursor: pointer;
 }
 
-/* Tariflar */
 .section-title {
   text-align: center;
   margin-bottom: 30px;
@@ -280,7 +306,6 @@
   border: 1px solid #00f2ff;
 }
 
-/* Sidebar */
 .admin-sidebar {
   width: 260px;
   background: #0f1117;
@@ -322,7 +347,6 @@
   color: var(--neon-red);
 }
 
-/* Main Content */
 .admin-main {
   flex: 1;
   padding: 40px;
@@ -350,18 +374,13 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   width: 100%;
 }
-.avatar-img{
-  width: 40px;
-  height: 40px;
-  background: var(--neon-blue);
-  color: #000;
-  font-size: 1.2rem;
-  font-weight: 800;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
+
 .user-table {
   width: 100%;
   border-collapse: collapse;
@@ -375,7 +394,7 @@
   text-transform: uppercase;
   font-size: 0.85rem;
 }
-/* Settings Avatar */
+
 .avatar-circle {
   width: 75px;
   height: 75px;
@@ -385,24 +404,10 @@
   box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
 }
 
-.avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .user-cell {
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.admin-mini-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid #00f2ff;
-  object-fit: cover;
 }
 
 .simple-switch {
@@ -430,7 +435,6 @@
   letter-spacing: 0.5px;
 }
 
-/* Badges */
 .role-badge {
   padding: 4px 12px;
   border-radius: 20px;
@@ -441,7 +445,6 @@
 .role-badge.admin { background: rgba(0, 242, 255, 0.2); color: var(--neon-blue); border: 1px solid var(--neon-blue); }
 .role-badge.user { background: rgba(255, 255, 255, 0.1); color: #ccc; }
 
-/* Buttons */
 .actions-cell {
   display: flex;
   gap: 12px;
@@ -479,7 +482,6 @@
   box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);
 }
 
-/* Modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -540,4 +542,92 @@
   color: #fff;
   border: none;
   cursor: pointer;
+}
+
+@media screen and (max-width: 1024px) {
+  .pricing-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 0 20px;
+  }
+  .profile-content-card {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 20px;
+  }
+  .profile-form {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .admin-container {
+    flex-direction: column;
+  }
+  .admin-sidebar {
+    width: 100%;
+    padding: 15px;
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+  }
+  .admin-logo {
+    margin-bottom: 20px;
+  }
+  .admin-sidebar .nav-item {
+    display: inline-block;
+    width: auto;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .admin-main {
+    padding: 20px 15px;
+  }
+  .admin-header h2 {
+    font-size: 1.5rem;
+  }
+  .table-wrapper {
+    overflow-x: auto;
+  }
+  .user-table th, .user-table td {
+    padding: 12px 10px;
+    font-size: 13px;
+  }
+  .pricing-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .profile-actions {
+    flex-direction: column;
+  }
+  .save-profile-btn, .cancel-btn {
+    width: 100%;
+    text-align: center;
+  }
+  .actions-cell {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .btn-view, .btn-delete {
+    padding: 5px 8px;
+    font-size: 11px;
+    width: 100%;
+    text-align: center;
+  }
+  .pricing-card.popular {
+    transform: scale(1); 
+  }
+  .profile-card {
+    width: 90%; 
+    padding: 20px;
+  }
 }
