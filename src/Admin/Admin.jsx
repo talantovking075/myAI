@@ -5,7 +5,7 @@ import AdminChat from '../AdminChat/AdminChat';
 
 const Admin = ({ users, currentUser, logout, onDelete }) => {
   const [selectedUser, setSelectedUser] = useState(null);
-  const [activeTab, setActiveTab] = useState('dash');
+  const [activeTab, setActiveTab] = useState('users');
 
   const menuItems = [
     { id: 'dash', label: 'Dashboard', icon: '📊' },
@@ -50,17 +50,7 @@ const Admin = ({ users, currentUser, logout, onDelete }) => {
 
         <main className="content-area">
           <div className="content-glass-card">
-            {activeTab === 'dash' && (
-              <section className="dashboard-section">
-                <div className="section-header">
-                  <div className="title-group">
-                    <h2 className="neon-title">Dashboard Ko'rsatkichlari</h2>
-                    <div className="title-line"></div>
-                  </div>
-                </div>
-                <AddDash users={users} />
-              </section>
-            )}
+            {activeTab === 'dash' && <AddDash users={users} />}
             
             {activeTab === 'chat' && <AdminChat currentUser={currentUser} />}
 
@@ -68,12 +58,10 @@ const Admin = ({ users, currentUser, logout, onDelete }) => {
               <section className="users-section">
                 <div className="section-header">
                   <div className="title-group">
-                    <h2 className="neon-title">Foydalanuvchilar</h2>
+                    <h2 className="neon-title">FOYDALANUVCHILAR</h2>
                     <div className="title-line"></div>
                   </div>
-                  <div className="stats-badge">
-                    Jami: <b>{users.length}</b>
-                  </div>
+                  <div className="stats-badge">Jami: <b>{users.length}</b></div>
                 </div>
 
                 <div className="table-responsive">
@@ -92,7 +80,9 @@ const Admin = ({ users, currentUser, logout, onDelete }) => {
                           <td>#{index + 1}</td>
                           <td>
                             <div className="user-flex">
-                              <img src={u.avatar} alt="" className="mini-img" />
+                              <div className="mini-avatar-wrapper">
+                                <img src={u.avatar} alt="" className="mini-img" />
+                              </div>
                               <span>{u.user}</span>
                             </div>
                           </td>
@@ -115,10 +105,42 @@ const Admin = ({ users, currentUser, logout, onDelete }) => {
           </div>
         </main>
 
+        {/* VIEW MODAL OYNASI */}
         {selectedUser && (
           <div className="neon-modal-overlay" onClick={() => setSelectedUser(null)}>
             <div className="neon-modal-card" onClick={e => e.stopPropagation()}>
-               <button onClick={() => setSelectedUser(null)}>Yopish</button>
+              <div className="modal-close-icon" onClick={() => setSelectedUser(null)}>×</div>
+              
+              <div className="modal-profile-header">
+                <div className="modal-avatar-glow">
+                  <img src={selectedUser.avatar} alt="user" />
+                </div>
+                <h2 className="modal-username">{selectedUser.user}</h2>
+                <span className={`modal-badge ${selectedUser.role}`}>{selectedUser.role}</span>
+              </div>
+
+              <div className="modal-info-grid">
+                <div className="info-box">
+                  <label>Foydalanuvchi ID</label>
+                  <span>#834{Math.floor(Math.random() * 100)}</span>
+                </div>
+                <div className="info-box">
+                  <label>Holati</label>
+                  <span className="status-online">● Onlayn</span>
+                </div>
+                <div className="info-box">
+                  <label>A'zolik</label>
+                  <span>Bepul</span>
+                </div>
+                <div className="info-box">
+                  <label>Xabarlar soni</label>
+                  <span>124 ta</span>
+                </div>
+              </div>
+
+              <button className="modal-btn-close" onClick={() => setSelectedUser(null)}>
+                Yopish
+              </button>
             </div>
           </div>
         )}

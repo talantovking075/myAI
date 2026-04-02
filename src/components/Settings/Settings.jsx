@@ -2,16 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SettingsModal.css';
 
-const Settings = ({ onClose }) => {
+const Settings = ({ user, updateUser, onClose }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profile');
-  
-  // Ma'lumotlarni yuklash
-  const userName = localStorage.getItem('userName') || 'Foydalanuvchi';
-  const userAvatar = localStorage.getItem('userAvatar') || 'https://via.placeholder.com/80';
   const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') !== 'light');
-  const [enterToSend, setEnterToSend] = useState(true);
-  const [creativity, setCreativity] = useState(0.7);
+  const [enterToSend, setEnterToSend] = useState(() => localStorage.getItem('enterToSend') !== 'false');
+  const [creativity, setCreativity] = useState(() => localStorage.getItem('creativity') || 0.7);
 
   useEffect(() => {
     const theme = isDarkMode ? 'dark' : 'light';
@@ -19,15 +15,22 @@ const Settings = ({ onClose }) => {
     localStorage.setItem('theme', theme);
   }, [isDarkMode]);
 
-  const handleEditProfile = () => {
-    onClose(); 
-    navigate('/profile'); 
+  const handleToggleTheme = () => setIsDarkMode(!isDarkMode);
+  
+  const handleToggleEnter = () => {
+    const newValue = !enterToSend;
+    setEnterToSend(newValue);
+    localStorage.setItem('enterToSend', newValue);
+  };
+
+  const handleCreativity = (val) => {
+    setCreativity(val);
+    localStorage.setItem('creativity', val);
   };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        
         <div className="modal-sidebar">
           <h3>Sozlamalar</h3>
           <button className={activeTab === 'profile' ? 'active' : ''} onClick={() => setActiveTab('profile')}>👤 Profil</button>
@@ -37,30 +40,27 @@ const Settings = ({ onClose }) => {
         </div>
 
         <div className="modal-body">
-          {/* PROFIL TAB */}
           {activeTab === 'profile' && (
             <div className="tab-content">
               <h3>Profil ma'lumotlari</h3>
               <div className="profile-preview-card">
                 <div className="profile-info-main">
-                  {/* DOIRA ICHIDA RASM */}
                   <div className="avatar-circle">
-                    <img src={userAvatar} alt="User" className="avatar-img" />
+                    <img src={user.avatar} alt="User" className="avatar-img" />
                   </div>
                   <div className="profile-details">
-                    <h4>{userName}</h4>
-                    <p>ID: #83429</p>
+                    <h4>{user.user}</h4>
+                    <p>ID: #00001</p>
                     <span className="status-online">● Onlayn</span>
                   </div>
                 </div>
-                <button className="edit-profile-btn" onClick={handleEditProfile}>
+                <button className="edit-profile-btn" onClick={() => { onClose(); navigate('/profile'); }}>
                   👤 Profilni tahrirlash
                 </button>
               </div>
             </div>
           )}
 
-          {/* UMUMIY TAB */}
           {activeTab === 'general' && (
             <div className="tab-content">
               <h3>Umumiy sozlamalar</h3>
@@ -69,11 +69,11 @@ const Settings = ({ onClose }) => {
                   <span>Tungi rejim</span>
                   <p>Mavzuni qorong'u holatga o'tkazish</p>
                 </div>
-                <input type="checkbox" className="simple-switch" checked={isDarkMode} onChange={() => setIsDarkMode(!isDarkMode)} />
+                <input type="checkbox" className="simple-switch" checked={isDarkMode} onChange={handleToggleTheme} />
               </div>
               <div className="setting-item">
                 <span>Enter orqali yuborish</span>
-                <input type="checkbox" className="simple-switch" checked={enterToSend} onChange={() => setEnterToSend(!enterToSend)} />
+                <input type="checkbox" className="simple-switch" checked={enterToSend} onChange={handleToggleEnter} />
               </div>
             </div>
           )}
@@ -84,11 +84,11 @@ const Settings = ({ onClose }) => {
               <div className="setting-item column">
                 <span>Ijodiylik (Creativity)</span>
                 <div className="range-wrapper">
-                  <input type="range" min="0" max="1" step="0.1" value={creativity} onChange={(e) => setCreativity(e.target.value)} className="custom-range" />
+                  <input type="range" min="0" max="1" step="0.1" value={creativity} onChange={(e) => handleCreativity(e.target.value)} className="custom-range" />
                   <span className="value-badge">{creativity}</span>
                 </div>
               </div>
-              <button className="clear-history-btn">🗑️ Chatni tozalash</button>
+              <button className="clear-history-btn" onClick={() => { localStorage.removeItem('gokki_messages'); window.location.reload(); }}>🗑️ Chatni tozalash</button>
             </div>
           )}
         </div>
@@ -97,4 +97,4 @@ const Settings = ({ onClose }) => {
   );
 };
 
-export default Settings; 
+export default Settings;
